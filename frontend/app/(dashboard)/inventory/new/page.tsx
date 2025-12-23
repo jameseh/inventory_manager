@@ -8,6 +8,7 @@ import Link from "next/link";
 import AttachmentsSection from "@/components/AttachmentsSection";
 import ImageUploader from "@/components/ImageUploader";
 import { getCategories } from "@/lib/api";
+import CategoryInput from "@/components/CategoryInput";
 
 export default function CreateItemPage() {
     const router = useRouter();
@@ -106,22 +107,11 @@ export default function CreateItemPage() {
                             <label htmlFor="category" className="block text-sm font-medium text-slate-300 mb-2">
                                 Category <span className="text-primary-400 text-xs ml-1">(Type or Select)</span>
                             </label>
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    list="category-suggestions"
-                                    name="category"
-                                    id="category"
-                                    className="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3 pl-10 text-white placeholder-slate-600 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 transition-all backdrop-blur-sm"
-                                    placeholder="Select or create new..."
-                                    value={formData.category}
-                                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                />
-                                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
-                            </div>
-                            <datalist id="category-suggestions">
-                                {categories.map(c => <option key={c} value={c} />)}
-                            </datalist>
+                            <CategoryInput
+                                value={formData.category}
+                                onChange={(val) => setFormData({ ...formData, category: val })}
+                                categories={categories}
+                            />
                         </div>
                     </div>
 

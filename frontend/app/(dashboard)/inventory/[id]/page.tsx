@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Item } from "@/lib/types";
 import ImageUploader from "@/components/ImageUploader";
 import AttachmentsSection from "@/components/AttachmentsSection";
+import CategoryInput from "@/components/CategoryInput";
 import Image from "next/image";
 
 export default function ItemDetailsPage() {
@@ -257,18 +258,11 @@ export default function ItemDetailsPage() {
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-slate-400 mb-1">Category</label>
-                                        <div className="relative">
-                                            <input
-                                                type="text"
-                                                list="category-suggestions"
-                                                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none"
-                                                value={editForm?.category || "Misc"}
-                                                onChange={(e) => setEditForm({ ...editForm!, category: e.target.value })}
-                                            />
-                                            <datalist id="category-suggestions">
-                                                {categories.map(c => <option key={c} value={c} />)}
-                                            </datalist>
-                                        </div>
+                                        <CategoryInput
+                                            value={editForm?.category || "Misc"}
+                                            onChange={(val) => setEditForm({ ...editForm!, category: val })}
+                                            categories={categories}
+                                        />
                                     </div>
                                 </div>
 

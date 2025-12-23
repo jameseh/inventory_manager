@@ -1,0 +1,9 @@
+pyenv
+__pycache__
+inventory.db
+make_admin.py
+.git
+.env
+.next
+.gitmodules
+frontend/node_modules/
