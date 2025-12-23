@@ -41,6 +41,11 @@ body {
   border: 1px solid var(--border-glass);
 }
 
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+
 @utility glass-card {
   background: linear-gradient(145deg, rgba(30, 37, 50, 0.6) 0%, rgba(21, 25, 35, 0.4) 100%);
   backdrop-filter: blur(10px);

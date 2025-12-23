@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback, Suspense } from "react";
 import { Item } from "@/lib/types";
 import { Search, Filter, Plus, Minus, Trash2, MapPin, Zap, Package, Tag, ArrowRight, ArrowDownAZ, ArrowUpAZ, Calendar, Layers, Hash } from "lucide-react";
 import api, { getItems, getCategories } from "@/lib/api";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -21,7 +21,8 @@ function useDebounce<T>(value: T, delay: number): T {
 type SortField = 'name' | 'stock' | 'created_at';
 type SortOrder = 'asc' | 'desc';
 
-export default function InventoryPage() {
+function InventoryContent() {
+    console.log("InventoryPage: Render");
     const [items, setItems] = useState<Item[]>([]);
     const [categories, setCategories] = useState<string[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -30,10 +31,9 @@ export default function InventoryPage() {
     const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
     const [loading, setLoading] = useState(true);
     const router = useRouter();
-    const searchParams = useSearchParams();
 
-    // Initialize search from URL
-    const initialSearch = searchParams.get("q") || "";
+    // Initial search
+    const initialSearch = "";
     const [search, setSearch] = useState(initialSearch);
     const debouncedSearch = useDebounce(search, 300);
 
@@ -51,13 +51,9 @@ export default function InventoryPage() {
 
     // Effect to handle search changes
     useEffect(() => {
+        console.log("InventoryPage: Effect triggered. Search:", debouncedSearch);
         fetchItems(debouncedSearch);
-        // Update URL to match search
-        const params = new URLSearchParams();
-        if (debouncedSearch) params.set("q", debouncedSearch);
-        else params.delete("q");
-        router.replace(`/inventory?${params.toString()}`, { scroll: false });
-    }, [debouncedSearch, fetchItems, router]);
+    }, [debouncedSearch, fetchItems]);
 
     // Fetch categories on mount
     useEffect(() => {
@@ -137,7 +133,7 @@ export default function InventoryPage() {
                     <p className="text-slate-400 text-sm">Manage your components and stock.</p>
                 </div>
 
-                <div className="flex w-full md:w-auto gap-3">
+                <div className="flex flex-col md:flex-row w-full md:w-auto gap-3">
                     <div className="relative flex-1 md:w-72">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                         <input
@@ -146,21 +142,24 @@ export default function InventoryPage() {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all backdrop-blur-sm"
+                            suppressHydrationWarning
                         />
                     </div>
-                    <button
-                        onClick={() => setShowFilters(!showFilters)}
-                        className={`p-2.5 rounded-xl border transition-all ${showFilters ? 'bg-primary-500/20 border-primary-500 text-primary-500' : 'bg-slate-900/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-600'}`}
-                        title="Filters & Sorting"
-                    >
-                        <Filter size={20} />
-                    </button>
-                    <Link href="/inventory/new">
-                        <button className="flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-500 text-white font-medium rounded-xl transition-all shadow-[0_0_15px_-3px_rgba(0,229,255,0.4)] hover:shadow-[0_0_20px_-3px_rgba(0,229,255,0.6)]">
-                            <Plus size={18} />
-                            <span className="hidden md:inline">Add Item</span>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => setShowFilters(!showFilters)}
+                            className={`flex-1 md:flex-none p-2.5 rounded-xl border transition-all flex items-center justify-center ${showFilters ? 'bg-primary-500/20 border-primary-500 text-primary-500' : 'bg-slate-900/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-600'}`}
+                            title="Filters & Sorting"
+                        >
+                            <Filter size={20} />
                         </button>
-                    </Link>
+                        <Link href="/inventory/new" className="flex-1 md:flex-none">
+                            <button className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-500 text-white font-medium rounded-xl transition-all shadow-[0_0_15px_-3px_rgba(0,229,255,0.4)] hover:shadow-[0_0_20px_-3px_rgba(0,229,255,0.6)]">
+                                <Plus size={18} />
+                                <span>Add Item</span>
+                            </button>
+                        </Link>
+                    </div>
                 </div>
             </div>
 
@@ -250,6 +249,14 @@ export default function InventoryPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function InventoryPage() {
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div></div>}>
+            <InventoryContent />
+        </Suspense>
     );
 }
 

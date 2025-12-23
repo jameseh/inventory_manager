@@ -39,9 +39,11 @@ export default function LoginPage() {
             // I'll update the context to expose a setUser or fetchUser method, or just reload.
             // Reload is simplest for now to ensure clean state.
             localStorage.setItem("user", JSON.stringify(userResponse.data));
+            // alert("Login Successful! Token received: " + response.data.access_token.substring(0, 10) + "...");
             window.location.href = "/";
         } catch (err: any) {
             console.error(err);
+            alert(`Login Failed: ${err.message}\nCheck console for details.`);
             setError("Invalid username or password");
         }
     };

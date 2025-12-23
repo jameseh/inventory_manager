@@ -19,7 +19,13 @@ app.mount("/media", StaticFiles(directory=MEDIA_DIR), name="media")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://192.168.1.206:3000",
+        "http://localhost:8000",
+        "http://192.168.1.206:8000",
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True

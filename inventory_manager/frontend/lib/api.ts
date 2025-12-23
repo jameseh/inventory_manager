@@ -26,8 +26,20 @@ export interface ItemUpdate {
     attachments?: string[];
 }
 
+const getBaseUrl = () => {
+    // Ensure we don't have purely undefined or null
+    const envUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (envUrl && envUrl.startsWith("http")) {
+        return envUrl;
+    }
+    return "http://localhost:8000";
+};
+
+const baseURL = getBaseUrl();
+console.log("API Client initialized with baseURL:", baseURL);
+
 const api = axios.create({
-    baseURL: "http://localhost:8000",
+    baseURL,
     headers: {
         "Content-Type": "application/json",
     },
@@ -43,6 +55,20 @@ api.interceptors.request.use(
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// Add a response interceptor to handle 401 errors
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            // Dispatch a custom event that AuthContext can listen to
+            if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('auth:unauthorized'));
+            }
+        }
         return Promise.reject(error);
     }
 );

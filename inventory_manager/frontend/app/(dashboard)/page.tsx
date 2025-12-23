@@ -87,7 +87,7 @@ export default function Dashboard() {
             </div>
 
             {/* Top Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                 <StatsCard
                     title="Total Items"
                     value={stats.total_items}
@@ -178,9 +178,9 @@ export default function Dashboard() {
                                     <div key={log.id} className="p-4 hover:bg-white/5 transition-colors">
                                         <div className="flex items-start gap-4">
                                             <div className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${log.action === "CREATE" ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" :
-                                                    log.action === "REMOVE_STOCK" ? "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]" :
-                                                        log.action === "ADD_STOCK" ? "bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]" :
-                                                            "bg-amber-500"
+                                                log.action === "REMOVE_STOCK" ? "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]" :
+                                                    log.action === "ADD_STOCK" ? "bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]" :
+                                                        "bg-amber-500"
                                                 }`} />
                                             <div>
                                                 <p className="text-sm text-slate-300">

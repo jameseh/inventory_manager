@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getProject, addProjectItem, updateProjectStatus, Project, Item, getItems } from "@/lib/api";
+import { getProject, addProjectItem, updateProjectStatus, Project, getItems } from "@/lib/api";
+import { Item } from "@/lib/types";
 import { ArrowLeft, Plus, Play, CheckCircle, Package, AlertTriangle, Search, X } from "lucide-react";
 import Link from "next/link";
 
@@ -100,8 +101,8 @@ export default function ProjectDetailsPage() {
                     <div>
                         <div className="flex items-center gap-2 mb-1">
                             <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${project.status === "ACTIVE" ? "bg-emerald-500/10 text-emerald-500" :
-                                    project.status === "COMPLETED" ? "bg-blue-500/10 text-blue-500" :
-                                        "bg-slate-800 text-slate-400"
+                                project.status === "COMPLETED" ? "bg-blue-500/10 text-blue-500" :
+                                    "bg-slate-800 text-slate-400"
                                 }`}>
                                 {project.status}
                             </span>

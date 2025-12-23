@@ -24,6 +24,7 @@ export default function TransactionsPage() {
     const LIMIT = 20;
 
     useEffect(() => {
+        console.log("TransactionsPage: Fetching transactions for page", page);
         fetchTransactions();
     }, [page]);
 
@@ -77,9 +78,9 @@ export default function TransactionsPage() {
                                         <td className="p-4 pl-6">
                                             <div className="flex items-center gap-2">
                                                 <div className={`p-1.5 rounded-lg ${tx.transaction_type === "CREATE" ? "bg-emerald-500/10 text-emerald-500" :
-                                                        tx.transaction_type === "REMOVE_STOCK" ? "bg-rose-500/10 text-rose-500" :
-                                                            tx.transaction_type === "ADD_STOCK" ? "bg-blue-500/10 text-blue-500" :
-                                                                "bg-amber-500/10 text-amber-500"
+                                                    tx.transaction_type === "REMOVE_STOCK" ? "bg-rose-500/10 text-rose-500" :
+                                                        tx.transaction_type === "ADD_STOCK" ? "bg-blue-500/10 text-blue-500" :
+                                                            "bg-amber-500/10 text-amber-500"
                                                     }`}>
                                                     {tx.transaction_type === "ADD_STOCK" ? <ArrowDownLeft size={16} /> :
                                                         tx.transaction_type === "REMOVE_STOCK" ? <ArrowUpRight size={16} /> :
@@ -95,7 +96,7 @@ export default function TransactionsPage() {
                                         </td>
                                         <td className="p-4">
                                             <span className={`font-mono font-bold ${tx.transaction_type === "REMOVE_STOCK" ? "text-rose-400" :
-                                                    tx.transaction_type === "ADD_STOCK" ? "text-blue-400" : "text-emerald-400"
+                                                tx.transaction_type === "ADD_STOCK" ? "text-blue-400" : "text-emerald-400"
                                                 }`}>
                                                 {tx.transaction_type === "REMOVE_STOCK" ? "-" : "+"}{tx.amount}
                                             </span>
@@ -104,7 +105,7 @@ export default function TransactionsPage() {
                                             {tx.user_name || "Unknown"}
                                         </td>
                                         <td className="p-4 text-slate-400 text-sm">
-                                            {new Date(tx.timestamp).toLocaleString()}
+                                            <span suppressHydrationWarning>{new Date(tx.timestamp).toLocaleString()}</span>
                                         </td>
                                         <td className="p-4 pr-6 text-slate-500 text-sm max-w-xs truncate" title={tx.notes || ""}>
                                             {tx.notes || "-"}
