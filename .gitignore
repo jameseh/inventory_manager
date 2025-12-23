@@ -6,4 +6,5 @@ make_admin.py
 .env
 .next
 .gitmodules
-frontend/node_modules/
+node_modules
+
