@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0B0E14; /* Deep, rich dark blue/black */
+  --color-surface: #151923; /* Slightly lighter surface */
+  --color-surface-highlight: #1E2532; /* Lighter surface for hover/active */
+  
+  --color-primary-500: #00E5FF; /* Cyan/Neon Blue */
+  --color-primary-600: #00B8CC;
+  --color-primary-glow: rgba(0, 229, 255, 0.5);
+
+  --color-secondary-500: #7C3AED; /* Violet/Purple */
+  --color-secondary-600: #6D28D9;
+  
+  --color-accent-500: #F43F5E; /* Rose/Pink */
+  --color-success-500: #10B981; /* Emerald */
+  --color-warning-500: #F59E0B; /* Amber */
+  
+  /* Glassmorphism helpers */
+  --backdrop-blur-md: 12px;
+  --bg-glass: rgba(21, 25, 35, 0.7);
+  --border-glass: rgba(255, 255, 255, 0.08);
+}
+
+/* Custom utilities that might not be directly in the theme block depending on tailwind version, 
+   but standardizing on classes is safer. 
+   We will treat standard tailwind classes as the base and override/extend logic here.
+*/
+
+body {
+  background-color: var(--color-background);
+  color: #F1F5F9;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Utilities */
+@utility glass-panel {
+  background-color: var(--bg-glass);
+  backdrop-filter: blur(var(--backdrop-blur-md));
+  border: 1px solid var(--border-glass);
+}
+
+@utility glass-card {
+  background: linear-gradient(145deg, rgba(30, 37, 50, 0.6) 0%, rgba(21, 25, 35, 0.4) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@utility text-glow {
+  text-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+/* Animation Utilities */
+@utility animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Ease-out quart */
+}
+
+@utility animate-slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
