@@ -7,4 +7,4 @@ make_admin.py
 .next
 .gitmodules
 node_modules
-
+.idea
